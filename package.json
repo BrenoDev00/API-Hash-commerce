@@ -1,7 +1,7 @@
 {
-  "name": "api-teste",
+  "name": "api-hash-commerce",
   "version": "1.0.0",
-  "description": "api hash-commerce.",
+  "description": "API RESTful de e-commerce de roupas.",
   "main": "app.js",
   "scripts": {
     "dev": "node --watch ."
