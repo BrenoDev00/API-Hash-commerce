@@ -1,0 +1,19 @@
+{
+  "name": "api-teste",
+  "version": "1.0.0",
+  "description": "api hash-commerce.",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node --watch ."
+  },
+  "author": "Breno",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "express": "^5.1.0",
+    "pg": "^8.14.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.5.0"
+  }
+}

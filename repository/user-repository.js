@@ -1,0 +1,36 @@
+import { BaseRepository } from "./base-repository.js";
+
+export class UserRepository extends BaseRepository {
+  async getUsers() {
+    try {
+      return await super.getAll("users", ["id", "name", "surname", "email"]);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUserById(id) {
+    try {
+      return await super.getById("users", id, [
+        "id",
+        "name",
+        "surname",
+        "email",
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createUser(values) {
+    try {
+      return await super.createData("users", values, [
+        "name",
+        "surname",
+        "email",
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  }
+}

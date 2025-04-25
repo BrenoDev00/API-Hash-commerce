@@ -1,2 +1,2 @@
-# api-hash-commerce
+# api-hash-commerce (em andamento)
 API RESTful de e-commerce de roupas.
