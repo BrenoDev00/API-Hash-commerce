@@ -45,4 +45,14 @@ export class BaseRepository {
       (await poolConection).release();
     }
   }
+
+  async deleteById(table, id) {
+    try {
+      const query = `DELETE FROM public.${table} WHERE id = $1`;
+
+      return await pool.query(query, [id]);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

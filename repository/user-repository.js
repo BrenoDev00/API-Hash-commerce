@@ -33,4 +33,12 @@ export class UserRepository extends BaseRepository {
       throw error;
     }
   }
+
+  async deleteUserById(id) {
+    try {
+      return await super.deleteById("users", id);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -31,3 +31,11 @@ userRouter.post("/", async (req, res) => {
 
   return res.status(201).send("Usuário criado com sucesso!");
 });
+
+userRouter.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  await new UserRepository().deleteUserById(id);
+
+  return res.status(200).send("Usuário excluído com sucesso!");
+});
