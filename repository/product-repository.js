@@ -38,4 +38,12 @@ export class ProductRepository extends BaseRepository {
       throw error;
     }
   }
+
+  async deleteProductById(id) {
+    try {
+      await super.deleteById("products", id);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -32,3 +32,11 @@ productRouter.post("/", async (req, res) => {
 
   return res.status(201).send("Produto criado com sucesso!");
 });
+
+productRouter.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  await new ProductRepository().deleteProductById(id);
+
+  return res.status(200).send("Produto excluído com sucesso!");
+});
