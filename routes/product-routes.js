@@ -16,3 +16,19 @@ productRouter.get("/:id", async (req, res) => {
 
   return res.status(200).send(result);
 });
+
+productRouter.post("/", async (req, res) => {
+  const { body } = req;
+
+  const productColumns = ["name", "price_in_cents", "size"];
+
+  const values = productColumns.reduce((acc, columnName) => {
+    acc.push(body[columnName]);
+
+    return acc;
+  }, []);
+
+  await new ProductRepository().createProduct(values);
+
+  return res.status(201).send("Produto criado com sucesso!");
+});

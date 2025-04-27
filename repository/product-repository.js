@@ -26,4 +26,16 @@ export class ProductRepository extends BaseRepository {
       throw error;
     }
   }
+
+  async createProduct(values) {
+    try {
+      await super.createData("products", values, [
+        "name",
+        "price_in_cents",
+        "size",
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
