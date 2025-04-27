@@ -2,8 +2,11 @@ import "dotenv/config";
 import express from "express";
 import { userRouter } from "./routes/user-routes.js";
 import { productRouter } from "./routes/product-routes.js";
+import helmet from "helmet";
 
 const app = express();
+
+app.use(helmet());
 
 app.use(express.json());
 
@@ -12,11 +15,9 @@ app.use("/users", userRouter);
 app.use("/products", productRouter);
 
 function bootstrap() {
-  try {
-    app.listen(3001, () => console.log("API rodando na porta 3001"));
-  } catch (error) {
-    console.error("Não foi possível executar a API: ", error);
-  }
+  const port = 3001;
+
+  app.listen(port, () => console.log("API rodando na porta", port));
 }
 
 bootstrap();
