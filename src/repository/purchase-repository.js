@@ -13,4 +13,17 @@ export class PurchaseRepository extends BaseRepository {
       throw error;
     }
   }
+
+  async createPurchase(purchaseValues) {
+    try {
+      return await super.createData("purchases", purchaseValues, [
+        "delivery_address",
+        "user_id",
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  
 }
