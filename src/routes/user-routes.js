@@ -1,5 +1,5 @@
+import { UserRepository } from "../repository/index.js";
 import { Router } from "express";
-import { UserRepository } from "../repository/user-repository.js";
 
 export const userRouter = Router();
 
