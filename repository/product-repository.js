@@ -39,6 +39,18 @@ export class ProductRepository extends BaseRepository {
     }
   }
 
+  async updateProductById(id, values) {
+    try {
+      await super.updateById("products", id, values, [
+        "name",
+        "price_in_cents",
+        "size",
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteProductById(id) {
     try {
       await super.deleteById("products", id);

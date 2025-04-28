@@ -33,6 +33,19 @@ productRouter.post("/", async (req, res) => {
   return res.status(201).send("Produto criado com sucesso!");
 });
 
+productRouter.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+
+  const columns = ["name", "price_in_cents", "size"];
+
+  const values = columns.map((column) => body[column]);
+
+  await new ProductRepository().updateProductById(id, values);
+
+  return res.status(200).send("Produto editado com sucesso!");
+});
+
 productRouter.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
