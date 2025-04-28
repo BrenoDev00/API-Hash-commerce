@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from "express";
-import { userRouter, productRouter } from "./routes/index.js";
+import { userRouter, productRouter, purchaseRouter } from "./routes/index.js";
 
 import helmet from "helmet";
 
@@ -13,6 +13,8 @@ app.use(express.json());
 app.use("/users", userRouter);
 
 app.use("/products", productRouter);
+
+app.use("/purchases", purchaseRouter);
 
 function bootstrap() {
   const port = 3001;
