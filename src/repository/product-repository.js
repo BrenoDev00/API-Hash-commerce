@@ -29,7 +29,7 @@ export class ProductRepository extends BaseRepository {
 
   async createProduct(values) {
     try {
-      await super.createData("products", values, [
+      return await super.createData("products", values, [
         "name",
         "price_in_cents",
         "size",
@@ -41,7 +41,7 @@ export class ProductRepository extends BaseRepository {
 
   async updateProductById(id, values) {
     try {
-      await super.updateById("products", id, values, [
+      return await super.updateById("products", id, values, [
         "name",
         "price_in_cents",
         "size",
@@ -53,7 +53,7 @@ export class ProductRepository extends BaseRepository {
 
   async deleteProductById(id) {
     try {
-      await super.deleteById("products", id);
+      return await super.deleteById("products", id);
     } catch (error) {
       throw error;
     }

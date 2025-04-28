@@ -34,6 +34,18 @@ export class UserRepository extends BaseRepository {
     }
   }
 
+  async updateUserById(id, values) {
+    try {
+      return await super.updateById("users", id, values, [
+        "name",
+        "surname",
+        "email",
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteUserById(id) {
     try {
       return await super.deleteById("users", id);

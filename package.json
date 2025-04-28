@@ -2,7 +2,7 @@
   "name": "api-hash-commerce",
   "version": "1.0.0",
   "description": "API RESTful de e-commerce de roupas.",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
     "dev": "node --watch .",
     "lint": "eslint ."

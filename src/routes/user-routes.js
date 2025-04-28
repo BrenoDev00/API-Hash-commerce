@@ -32,6 +32,19 @@ userRouter.post("/", async (req, res) => {
   return res.status(201).send("Usuário criado com sucesso!");
 });
 
+userRouter.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+
+  const columns = ["name", "surname", "email"];
+
+  const values = columns.map((column) => body[column]);
+
+  await new UserRepository().updateUserById(id, values);
+
+  return res.status(200).send("Usuário editado com sucesso!");
+});
+
 userRouter.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
