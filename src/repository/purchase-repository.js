@@ -25,5 +25,13 @@ export class PurchaseRepository extends BaseRepository {
     }
   }
 
-  
+  async updatePurchaseById(id, values) {
+    try {
+      return await super.updateById("purchases", id, values, [
+        "delivery_address",
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

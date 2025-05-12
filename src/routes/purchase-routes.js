@@ -24,3 +24,16 @@ purchaseRouter.post("/", async (req, res) => {
 
   return res.status(201).send("Compra adicionada com sucesso!");
 });
+
+purchaseRouter.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { body } = req;
+
+  const columns = ["delivery_address"];
+
+  const values = columns.map((column) => body[column]);
+
+  await new PurchaseRepository().updatePurchaseById(id, values);
+
+  return res.status(200).send("Compra editada com sucesso!");
+});
