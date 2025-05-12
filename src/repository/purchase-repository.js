@@ -47,4 +47,12 @@ export class PurchaseRepository extends BaseRepository {
       throw error;
     }
   }
+
+  async deletePurchaseById(id) {
+    try {
+      return await super.deleteById("purchases", id);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

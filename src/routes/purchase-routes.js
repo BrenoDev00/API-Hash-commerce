@@ -45,3 +45,11 @@ purchaseRouter.put("/:id", async (req, res) => {
 
   return res.status(200).send("Compra editada com sucesso!");
 });
+
+purchaseRouter.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  await new PurchaseRepository().deletePurchaseById(id);
+
+  return res.status(200).send("Compra excluída com sucesso!");
+});
