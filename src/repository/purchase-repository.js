@@ -14,6 +14,19 @@ export class PurchaseRepository extends BaseRepository {
     }
   }
 
+  async getPurchaseById(id) {
+    try {
+      return await super.getById("purchases", id, [
+        "id",
+        "purchase_date",
+        "delivery_address",
+        "user_id",
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createPurchase(purchaseValues) {
     try {
       return await super.createData("purchases", purchaseValues, [

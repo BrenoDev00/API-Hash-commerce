@@ -9,6 +9,14 @@ purchaseRouter.get("/", async (req, res) => {
   return res.status(200).send(result);
 });
 
+purchaseRouter.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const result = await new PurchaseRepository().getPurchaseById(id);
+
+  return res.status(200).send(result);
+});
+
 purchaseRouter.post("/", async (req, res) => {
   const { body } = req;
 
