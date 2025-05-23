@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { PurchaseRepository } from "../repository/index.js";
+import { PurchaseRepository } from "../repositories/index.js";
 import { uuidSchema } from "../schemas/uuid-schema.js";
 import {
   purchaseSchema,

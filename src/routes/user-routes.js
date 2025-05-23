@@ -1,4 +1,4 @@
-import { UserRepository } from "../repository/index.js";
+import { UserRepository } from "../repositories/user-repository.js";
 import { Router } from "express";
 import { userSchema } from "../schemas/user-schema.js";
 import { uuidSchema } from "../schemas/uuid-schema.js";
