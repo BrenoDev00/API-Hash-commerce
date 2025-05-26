@@ -16,7 +16,7 @@ app.use("/products", productRouter);
 app.use("/purchases", purchaseRouter);
 
 function bootstrap() {
-  const port = 3001;
+  const port = process.env.PORT || 3000;
 
   app.listen(port, () => console.log("API rodando na porta", port));
 }
