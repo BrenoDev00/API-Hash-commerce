@@ -1,5 +1,6 @@
 import { PurchaseRepository } from "../repositories/purchase-repository.js";
 import { ProductRepository } from "../repositories/product-repository.js";
+import { UserRepository } from "../repositories/user-repository.js";
 import { uuidSchema } from "../schemas/uuid-schema.js";
 import {
   purchaseSchema,
@@ -33,6 +34,7 @@ export class PurchaseController {
 
   async createPurchase(request, response) {
     const { body } = request;
+    const { user_id } = body;
     const { productId, productAmmount } = request.params;
 
     const formattedProductAmmount = Number(productAmmount);
@@ -62,6 +64,13 @@ export class PurchaseController {
 
     if (!bodyValidation.success)
       return response.status(400).send(bodyValidation.error.errors);
+
+    const searchedUserId = await new UserRepository().getUserById(user_id);
+
+    if (!searchedUserId.length)
+      return response
+        .status(404)
+        .send({ message: "id do usuário não encontrado." });
 
     const purchaseColumns = ["delivery_address", "user_id"];
 
