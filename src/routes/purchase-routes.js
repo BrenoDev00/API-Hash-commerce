@@ -11,7 +11,7 @@ purchaseRouter.get("/:id", async (request, response) => {
   return await new PurchaseController().getPurchaseById(request, response);
 });
 
-purchaseRouter.post("/", async (request, response) => {
+purchaseRouter.post("/:productId/:productAmmount", async (request, response) => {
   return await new PurchaseController().createPurchase(request, response);
 });
 

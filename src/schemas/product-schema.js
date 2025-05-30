@@ -5,3 +5,5 @@ export const productSchema = z.object({
   price_in_cents: z.number().positive(),
   size: z.string(),
 });
+
+export const productAmmountSchema = z.number().int().min(1);

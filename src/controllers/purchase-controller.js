@@ -1,9 +1,12 @@
 import { PurchaseRepository } from "../repositories/purchase-repository.js";
+import { ProductRepository } from "../repositories/product-repository.js";
 import { uuidSchema } from "../schemas/uuid-schema.js";
 import {
   purchaseSchema,
   updatePurchaseSchema,
 } from "../schemas/purchase-schema.js";
+import { productAmmountSchema } from "../schemas/product-schema.js";
+import { PurchaseProductController } from "./purchase-product-controller.js";
 
 export class PurchaseController {
   async getPurchases(request, response) {
@@ -30,11 +33,35 @@ export class PurchaseController {
 
   async createPurchase(request, response) {
     const { body } = request;
+    const { productId, productAmmount } = request.params;
 
-    const validation = purchaseSchema.safeParse(body);
+    const formattedProductAmmount = Number(productAmmount);
 
-    if (!validation.success)
-      return response.status(400).send(validation.error.errors);
+    const productIdValidation = uuidSchema.safeParse(productId);
+
+    const productAmmountValidation = productAmmountSchema.safeParse(
+      formattedProductAmmount
+    );
+
+    const bodyValidation = purchaseSchema.safeParse(body);
+
+    if (!productIdValidation.success)
+      return response.status(400).send(productIdValidation.error.errors);
+
+    const searchedProductId = await new ProductRepository().getProductById(
+      productId
+    );
+
+    if (!searchedProductId.length)
+      return response
+        .status(404)
+        .send({ message: "id do produto não encontrado." });
+
+    if (!productAmmountValidation.success)
+      return response.status(400).send(productAmmountValidation.error.errors);
+
+    if (!bodyValidation.success)
+      return response.status(400).send(bodyValidation.error.errors);
 
     const purchaseColumns = ["delivery_address", "user_id"];
 
@@ -44,7 +71,13 @@ export class PurchaseController {
       return acc;
     }, []);
 
-    await new PurchaseRepository().createPurchase(values);
+    const purchaseId = await new PurchaseRepository().createPurchase(values);
+
+    await new PurchaseProductController().createPurchaseProduct(
+      purchaseId,
+      productId,
+      productAmmount
+    );
 
     return response
       .status(201)

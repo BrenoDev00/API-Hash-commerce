@@ -29,10 +29,12 @@ export class PurchaseRepository extends BaseRepository {
 
   async createPurchase(purchaseValues) {
     try {
-      return await super.createData("purchases", purchaseValues, [
-        "delivery_address",
-        "user_id",
-      ]);
+      return await super.createDataWithReturn(
+        "purchases",
+        purchaseValues,
+        ["delivery_address", "user_id"],
+        "id"
+      );
     } catch (error) {
       throw error;
     }

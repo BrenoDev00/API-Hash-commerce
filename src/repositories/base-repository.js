@@ -29,15 +29,41 @@ export class BaseRepository {
     try {
       const flags = Array.from(new Array(columns.length).keys());
 
-      const formatedFlags = flags.map((flag) => `$${flag + 1}`);
+      const formattedFlags = flags.map((flag) => `$${flag + 1}`);
 
       const query = `INSERT INTO public.${table} (${columns.join(
         ", "
-      )}) VALUES (${formatedFlags.join(", ")})`;
+      )}) VALUES (${formattedFlags.join(", ")})`;
 
       (await poolConection).query("BEGIN TRANSACTION");
       (await poolConection).query(query, values);
       (await poolConection).query("COMMIT");
+    } catch (error) {
+      (await poolConection).query("ROLLBACK");
+      throw error;
+    } finally {
+      (await poolConection).release();
+    }
+  }
+
+  async createDataWithReturn(table, values, columns, returningColumn) {
+    const poolConection = pool.connect();
+    try {
+      const flags = Array.from(new Array(columns.length).keys());
+
+      const formattedFlags = flags.map((flag) => `$${flag + 1}`);
+
+      const query = `INSERT INTO public.${table} (${columns.join(
+        ", "
+      )}) VALUES (${formattedFlags.join(", ")}) RETURNING ${returningColumn}`;
+
+      (await poolConection).query("BEGIN TRANSACTION");
+
+      const result = (await poolConection).query(query, values);
+
+      (await poolConection).query("COMMIT");
+
+      return (await result).rows[0][returningColumn];
     } catch (error) {
       (await poolConection).query("ROLLBACK");
       throw error;
