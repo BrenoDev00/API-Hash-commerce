@@ -104,4 +104,14 @@ export class BaseRepository {
       throw error;
     }
   }
+
+  async deleteWhere(table, conditionColumn, value) {
+    try {
+      const query = `DELETE FROM public.${table} WHERE ${conditionColumn} = $1`;
+
+      return await pool.query(query, [value]);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

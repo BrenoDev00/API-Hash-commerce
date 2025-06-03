@@ -136,6 +136,8 @@ export class PurchaseController {
     if (!searchedPurchase.length)
       return response.status(404).send({ message: "Compra não encontrada." });
 
+    await new PurchaseProductController().deletePurchaseProductByPurchaseId(id);
+
     await new PurchaseRepository().deletePurchaseById(id);
 
     return response

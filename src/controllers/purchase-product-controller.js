@@ -6,4 +6,10 @@ export class PurchaseProductController {
 
     return await new PurchaseProductRepository().createPurchaseProduct(values);
   }
+
+  async deletePurchaseProductByPurchaseId(id) {
+    return await new PurchaseProductRepository().deletePurchaseProductByPurchaseId(
+      id
+    );
+  }
 }

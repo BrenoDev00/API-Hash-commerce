@@ -12,4 +12,12 @@ export class PurchaseProductRepository extends BaseRepository {
       throw error;
     }
   }
+
+  async deletePurchaseProductByPurchaseId(id) {
+    try {
+      return super.deleteWhere("purchases_products", "purchase_id", id);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
