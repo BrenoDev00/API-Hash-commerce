@@ -7,9 +7,16 @@ export class PurchaseProductController {
     return await new PurchaseProductRepository().createPurchaseProduct(values);
   }
 
-  async deletePurchaseProductByPurchaseId(id) {
+  async updatePurchaseProductByPurchaseId(productAmmount, purchaseId) {
+    return await new PurchaseProductRepository().updatePurchaseProductByPurchaseId(
+      productAmmount,
+      purchaseId
+    );
+  }
+
+  async deletePurchaseProductByPurchaseId(purchaseId) {
     return await new PurchaseProductRepository().deletePurchaseProductByPurchaseId(
-      id
+      purchaseId
     );
   }
 }

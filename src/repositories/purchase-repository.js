@@ -42,9 +42,13 @@ export class PurchaseRepository extends BaseRepository {
 
   async updatePurchaseById(id, values) {
     try {
-      return await super.updateById("purchases", id, values, [
-        "delivery_address",
-      ]);
+      return await super.updateByIdWithReturn(
+        "purchases",
+        id,
+        values,
+        ["delivery_address"],
+        "id"
+      );
     } catch (error) {
       throw error;
     }

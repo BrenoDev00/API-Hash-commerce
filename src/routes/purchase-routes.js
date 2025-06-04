@@ -11,11 +11,14 @@ purchaseRouter.get("/:id", async (request, response) => {
   return await new PurchaseController().getPurchaseById(request, response);
 });
 
-purchaseRouter.post("/:productId/:productAmmount", async (request, response) => {
-  return await new PurchaseController().createPurchase(request, response);
-});
+purchaseRouter.post(
+  "/:productId/:productAmmount",
+  async (request, response) => {
+    return await new PurchaseController().createPurchase(request, response);
+  }
+);
 
-purchaseRouter.put("/:id", async (request, response) => {
+purchaseRouter.put("/:id/:productAmmount", async (request, response) => {
   return await new PurchaseController().updatePurchaseById(request, response);
 });
 

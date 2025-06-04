@@ -13,6 +13,20 @@ export class PurchaseProductRepository extends BaseRepository {
     }
   }
 
+  async updatePurchaseProductByPurchaseId(value, purchaseId) {
+    try {
+      return await super.updateWhere(
+        "purchases_products",
+        value,
+        ["product_ammount"],
+        "purchase_id",
+        purchaseId
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deletePurchaseProductByPurchaseId(id) {
     try {
       return super.deleteWhere("purchases_products", "purchase_id", id);

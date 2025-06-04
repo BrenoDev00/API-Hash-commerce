@@ -95,6 +95,62 @@ export class BaseRepository {
     }
   }
 
+  async updateByIdWithReturn(table, id, values, columns, returningColumn) {
+    const poolConection = pool.connect();
+
+    try {
+      const setColumns = columns
+        .map((column, index) => `${column} = $${index + 1}`)
+        .join(", ");
+
+      const query = `UPDATE public.${table} SET ${setColumns} WHERE id = $${
+        columns.length + 1
+      } RETURNING ${returningColumn}`;
+
+      (await poolConection).query("BEGIN TRANSACTION");
+
+      const result = (await poolConection).query(query, [...values, id]);
+
+      (await poolConection).query("COMMIT");
+
+      return (await result).rows[0][returningColumn];
+    } catch (error) {
+      (await poolConection).query("ROLLBACK");
+      throw error;
+    } finally {
+      (await poolConection).release();
+    }
+  }
+
+  async updateWhere(
+    table,
+    values,
+    columns,
+    conditionColumn,
+    conditionColumnValue
+  ) {
+    const poolConection = pool.connect();
+
+    try {
+      const setColumns = columns
+        .map((column, index) => `${column} = $${index + 1}`)
+        .join(", ");
+
+      const query = `UPDATE public.${table} SET ${setColumns} WHERE ${conditionColumn} = $${
+        columns.length + 1
+      }`;
+
+      (await poolConection).query("BEGIN TRANSACTION");
+      (await poolConection).query(query, [...values, conditionColumnValue]);
+      (await poolConection).query("COMMIT");
+    } catch (error) {
+      (await poolConection).query("ROLLBACK");
+      throw error;
+    } finally {
+      (await poolConection).release();
+    }
+  }
+
   async deleteById(table, id) {
     try {
       const query = `DELETE FROM public.${table} WHERE id = $1`;

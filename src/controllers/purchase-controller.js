@@ -94,10 +94,16 @@ export class PurchaseController {
   }
 
   async updatePurchaseById(request, response) {
-    const { id } = request.params;
+    const { id, productAmmount } = request.params;
     const { body } = request;
 
     const idValidation = uuidSchema.safeParse(id);
+
+    const formattedProductAmmount = Number(productAmmount);
+
+    const productAmmountValidation = productAmmountSchema.safeParse(
+      formattedProductAmmount
+    );
 
     if (!idValidation.success)
       return response.status(400).send(idValidation.error.errors);
@@ -106,6 +112,9 @@ export class PurchaseController {
 
     if (!searchedProduct.length)
       return response.status(404).send({ message: "Compra não encontrada." });
+
+    if (!productAmmountValidation.success)
+      return response.status(400).send(productAmmountValidation.error.errors);
 
     const bodyValidation = updatePurchaseSchema.safeParse(body);
 
@@ -116,7 +125,15 @@ export class PurchaseController {
 
     const values = columns.map((column) => body[column]);
 
-    await new PurchaseRepository().updatePurchaseById(id, values);
+    const purchaseId = await new PurchaseRepository().updatePurchaseById(
+      id,
+      values
+    );
+
+    await new PurchaseProductController().updatePurchaseProductByPurchaseId(
+      productAmmount,
+      purchaseId
+    );
 
     return response
       .status(200)
