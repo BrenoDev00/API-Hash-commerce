@@ -32,7 +32,6 @@ export class UserRepository extends BaseRepository {
           "users.name",
           "users.surname",
           "users.email",
-          "purchases.id",
           "purchases.delivery_address",
           "purchases.purchase_date",
         ],

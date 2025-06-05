@@ -26,7 +26,22 @@ export class UserController {
   }
 
   async getPurchaseInfoByUser(request, response) {
-    const result = await new UserRepository().getPurchaseInfoByUser();
+    let result = await new UserRepository().getPurchaseInfoByUser();
+
+    result = result.map((item) => {
+      const formattedValues = {
+        id: item.id,
+        name: item.name,
+        surname: item.surname,
+        email: item.email,
+        purchase_info: {
+          delivery_address: item.delivery_address,
+          purchase_date: item.purchase_date,
+        },
+      };
+
+      return formattedValues;
+    });
 
     return response.status(200).send(result);
   }
