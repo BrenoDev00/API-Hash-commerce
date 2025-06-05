@@ -7,6 +7,10 @@ userRouter.get("/", async (request, response) => {
   return await new UserController().getUsers(request, response);
 });
 
+userRouter.get("/purchase-info", async (request, response) => {
+  return await new UserController().getPurchaseInfoByUser(request, response);
+});
+
 userRouter.get("/:id", async (request, response) => {
   return await new UserController().getUserById(request, response);
 });

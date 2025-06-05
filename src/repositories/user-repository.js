@@ -22,6 +22,29 @@ export class UserRepository extends BaseRepository {
     }
   }
 
+  async getPurchaseInfoByUser() {
+    try {
+      return await super.getWithJoin(
+        "purchases",
+        "users",
+        [
+          "users.id",
+          "users.name",
+          "users.surname",
+          "users.email",
+          "purchases.id",
+          "purchases.delivery_address",
+          "purchases.purchase_date",
+        ],
+        "INNER JOIN",
+        "purchases.user_id",
+        "users.id"
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createUser(values) {
     try {
       return await super.createData("users", values, [

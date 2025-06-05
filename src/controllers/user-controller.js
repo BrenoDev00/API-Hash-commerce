@@ -25,6 +25,12 @@ export class UserController {
     return response.status(200).send(result);
   }
 
+  async getPurchaseInfoByUser(request, response) {
+    const result = await new UserRepository().getPurchaseInfoByUser();
+
+    return response.status(200).send(result);
+  }
+
   async createUser(request, response) {
     const { body } = request;
 

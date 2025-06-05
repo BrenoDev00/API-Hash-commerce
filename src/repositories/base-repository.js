@@ -23,6 +23,25 @@ export class BaseRepository {
     }
   }
 
+  async getWithJoin(
+    leftTable,
+    rightTable,
+    columns,
+    joinType,
+    leftTableId,
+    rightTableId
+  ) {
+    try {
+      const query = `SELECT public.${columns.join(
+        ", "
+      )} FROM public.${leftTable} ${joinType} ${rightTable} ON public.${leftTableId} = public.${rightTableId}`;
+
+      return (await pool.query(query)).rows;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createData(table, values, columns) {
     const poolConection = pool.connect();
 
