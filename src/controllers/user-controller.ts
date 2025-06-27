@@ -1,28 +1,58 @@
 import { UserRepository } from "../repositories/user-repository.js";
 import { userSchema } from "../schemas/user-schema.js";
 import { uuidSchema } from "../schemas/uuid-schema.js";
+import { Request, Response } from "express";
+import {
+  UserInterface,
+  UserControllerInterface,
+  StatusCodeEnum,
+  ResponseMessageInterface,
+} from "../types/index.js";
 
-export class UserController {
-  async getUsers(request, response) {
-    const result = await new UserRepository().getUsers();
+export class UserController implements UserControllerInterface {
+  async getUsers(
+    _request: Request,
+    response: Response<UserInterface[] | ResponseMessageInterface>
+  ): Promise<Response<UserInterface[] | ResponseMessageInterface>> {
+    try {
+      const result: UserInterface[] = await new UserRepository().getUsers();
 
-    return response.status(200).send(result);
+      return response.status(StatusCodeEnum.Ok).send(result);
+    } catch (error) {
+      return response
+        .status(StatusCodeEnum.InternalError)
+        .send({ message: "Erro interno do servidor." });
+    }
   }
 
-  async getUserById(request, response) {
+  async getUserById(
+    request: Request<{ id: string }>,
+    response: Response<UserInterface[] | ResponseMessageInterface>
+  ): Promise<Response<UserInterface[] | ResponseMessageInterface>> {
     const { id } = request.params;
 
     const validation = uuidSchema.safeParse(id);
 
     if (!validation.success)
-      return response.status(400).send(validation.error.errors);
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: validation.error.errors });
 
-    const result = await new UserRepository().getUserById(id);
+    try {
+      const result: UserInterface[] = await new UserRepository().getUserById(
+        id
+      );
+      if (!result.length)
+        return response
+          .status(StatusCodeEnum.NotFound)
+          .send({ message: "Usuário não encontrado." });
 
-    if (!result.length)
-      return response.status(404).send({ message: "Usuário não encontrado." });
-
-    return response.status(200).send(result);
+      return response.status(StatusCodeEnum.Ok).send(result);
+    } catch (error) {
+      return response
+        .status(StatusCodeEnum.InternalError)
+        .send({ message: "Erro interno do servidor." });
+    }
   }
 
   async getPurchaseInfoByUser(request, response) {

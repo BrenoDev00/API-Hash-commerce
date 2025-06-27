@@ -1,25 +1,18 @@
 import { QueryResult, QueryResultRow } from "pg";
 
 export interface BaseRepositoryInterface {
-  getAll<T extends QueryResultRow>(
-    table: string,
-    columns: string[]
-  ): Promise<QueryResult<T>[]>;
+  getAll<T>(table: string, columns: string[]): Promise<T[]>;
 
-  getById<T extends QueryResultRow>(
-    table: string,
-    id: string,
-    columns: string[]
-  ): Promise<QueryResult<T>[]>;
+  getById<T>(table: string, id: string, columns: string[]): Promise<T[]>;
 
-  getWithJoin<T extends QueryResultRow>(
+  getWithJoin<T>(
     leftTable: string,
     rightTable: string,
     columns: string[],
     joinType: string,
     leftTableId: string,
     rightTableId: string
-  ): Promise<QueryResult<T>[]>;
+  ): Promise<T[]>;
 
   createData(table: string, values: string[], columns: string[]): Promise<void>;
 

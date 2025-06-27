@@ -3,10 +3,7 @@ import { PoolClient, QueryResult, QueryResultRow } from "pg";
 import { BaseRepositoryInterface } from "../types/repositories/index.js";
 
 export abstract class BaseRepository implements BaseRepositoryInterface {
-  async getAll<T extends QueryResultRow>(
-    table: string,
-    columns: string[]
-  ): Promise<QueryResult<T>[]> {
+  async getAll<T>(table: string, columns: string[]): Promise<T[]> {
     try {
       return (
         await pool.query(`SELECT ${columns.join(", ")} FROM public.${table}`)
@@ -16,11 +13,7 @@ export abstract class BaseRepository implements BaseRepositoryInterface {
     }
   }
 
-  async getById<T extends QueryResultRow>(
-    table: string,
-    id: string,
-    columns: string[]
-  ): Promise<QueryResult<T>[]> {
+  async getById<T>(table: string, id: string, columns: string[]): Promise<T[]> {
     const query: string = `SELECT ${columns.join(
       ", "
     )} FROM public.${table} WHERE id = $1`;
@@ -32,14 +25,14 @@ export abstract class BaseRepository implements BaseRepositoryInterface {
     }
   }
 
-  async getWithJoin<T extends QueryResultRow>(
+  async getWithJoin<T>(
     leftTable: string,
     rightTable: string,
     columns: string[],
     joinType: string,
     leftTableId: string,
     rightTableId: string
-  ): Promise<QueryResult<T>[]> {
+  ): Promise<T[]> {
     try {
       const query: string = `SELECT public.${columns.join(
         ", "

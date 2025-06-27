@@ -1,17 +1,11 @@
 import { BaseRepository } from "./base-repository.js";
+import { QueryResult } from "pg";
+import { UserInterface, PurchaseInfoByUser } from "../types/index.js";
 
 export class UserRepository extends BaseRepository {
-  async getUsers() {
+  async getUsers(): Promise<UserInterface[]> {
     try {
-      return await super.getAll("users", ["id", "name", "surname", "email"]);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getUserById(id) {
-    try {
-      return await super.getById("users", id, [
+      return await super.getAll<UserInterface>("users", [
         "id",
         "name",
         "surname",
@@ -22,9 +16,22 @@ export class UserRepository extends BaseRepository {
     }
   }
 
-  async getPurchaseInfoByUser() {
+  async getUserById(id: string): Promise<UserInterface[]> {
     try {
-      return await super.getWithJoin(
+      return await super.getById<UserInterface>("users", id, [
+        "id",
+        "name",
+        "surname",
+        "email",
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getPurchaseInfoByUser(): Promise<PurchaseInfoByUser[]> {
+    try {
+      return await super.getWithJoin<PurchaseInfoByUser>(
         "purchases",
         "users",
         [
@@ -44,7 +51,7 @@ export class UserRepository extends BaseRepository {
     }
   }
 
-  async createUser(values) {
+  async createUser(values: string[]): Promise<void> {
     try {
       return await super.createData("users", values, [
         "name",
@@ -56,7 +63,7 @@ export class UserRepository extends BaseRepository {
     }
   }
 
-  async updateUserById(id, values) {
+  async updateUserById(id: string, values: string[]): Promise<void> {
     try {
       return await super.updateById("users", id, values, [
         "name",
@@ -68,7 +75,7 @@ export class UserRepository extends BaseRepository {
     }
   }
 
-  async deleteUserById(id) {
+  async deleteUserById(id: string): Promise<QueryResult> {
     try {
       return await super.deleteById("users", id);
     } catch (error) {
