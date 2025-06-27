@@ -2,9 +2,9 @@
   "name": "api-hash-commerce",
   "version": "1.0.0",
   "description": "API RESTful de e-commerce de roupas.",
-  "main": "src/app.js",
+  "main": "dist/app.js",
   "scripts": {
-    "dev": "node --watch .",
+    "dev": "tsc-watch --onSuccess \"node dist/app.js\"",
     "lint": "eslint ."
   },
   "author": "Breno",
@@ -18,7 +18,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",
+    "@types/express": "^5.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
+    "@typescript-eslint/parser": "^8.35.0",
     "dotenv": "^16.5.0",
-    "eslint": "^9.25.1"
+    "eslint": "^9.29.0",
+    "tsc-watch": "^7.1.1",
+    "typescript": "^5.8.3"
   }
 }

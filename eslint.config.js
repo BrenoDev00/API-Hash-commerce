@@ -1,26 +1,22 @@
 import { defineConfig } from "eslint/config";
-import js from "@eslint/js";
+import tseslint from "typescript-eslint";
 
 export default defineConfig([
   {
-    files: ["**/*.js"],
+    files: ["**/*.ts"],
     languageOptions: {
-      ecmaVersion: 2021,
-      sourceType: "module",
-      globals: {
-        console: true,
-        process: true,
-        __dirname: true,
-        module: true,
-        require: true,
+      parser: tseslint.parser,
+      parserOptions: {
+        project: "./tsconfig.json",
       },
     },
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+    },
     rules: {
-      ...js.configs.recommended.rules,
-      "no-unused-vars": "warn",
-      "no-undef": "warn",
+      ...tseslint.configs.recommended.rules,
       "no-console": "off",
-      "no-useless-catch": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
     },
   },
 ]);
