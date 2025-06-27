@@ -1,6 +1,6 @@
 import { BaseRepository } from "./base-repository.js";
 import { QueryResult } from "pg";
-import { UserInterface, PurchaseInfoByUser } from "../types/index.js";
+import { UserInterface, PurchaseInfoByUserInterface } from "../types/index.js";
 
 export class UserRepository extends BaseRepository {
   async getUsers(): Promise<UserInterface[]> {
@@ -29,9 +29,9 @@ export class UserRepository extends BaseRepository {
     }
   }
 
-  async getPurchaseInfoByUser(): Promise<PurchaseInfoByUser[]> {
+  async getPurchaseInfoByUser(): Promise<PurchaseInfoByUserInterface[]> {
     try {
-      return await super.getWithJoin<PurchaseInfoByUser>(
+      return await super.getWithJoin<PurchaseInfoByUserInterface>(
         "purchases",
         "users",
         [

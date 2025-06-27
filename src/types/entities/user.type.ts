@@ -5,7 +5,7 @@ export interface UserInterface {
   email: string;
 }
 
-export interface PurchaseInfoByUser extends UserInterface {
+export interface PurchaseInfoByUserInterface extends UserInterface {
   deliveryAddress: string;
   purchaseDate: Date;
 }
