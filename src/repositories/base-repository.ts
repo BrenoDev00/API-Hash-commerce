@@ -1,13 +1,16 @@
 import { pool } from "./data-base.js";
 import { PoolClient, QueryResult, QueryResultRow } from "pg";
 import { BaseRepositoryInterface } from "../types/repositories/index.js";
+import camelcaseKeys from "camelcase-keys";
 
 export abstract class BaseRepository implements BaseRepositoryInterface {
   async getAll<T>(table: string, columns: string[]): Promise<T[]> {
     try {
-      return (
+      const result = (
         await pool.query(`SELECT ${columns.join(", ")} FROM public.${table}`)
       ).rows;
+
+      return camelcaseKeys(result, { deep: true });
     } catch (error) {
       throw error;
     }
@@ -19,7 +22,9 @@ export abstract class BaseRepository implements BaseRepositoryInterface {
     )} FROM public.${table} WHERE id = $1`;
 
     try {
-      return (await pool.query(query, [id])).rows;
+      const result = (await pool.query(query, [id])).rows;
+
+      return camelcaseKeys(result, { deep: true });
     } catch (error) {
       throw error;
     }
@@ -33,12 +38,14 @@ export abstract class BaseRepository implements BaseRepositoryInterface {
     leftTableId: string,
     rightTableId: string
   ): Promise<T[]> {
-    try {
-      const query: string = `SELECT public.${columns.join(
-        ", "
-      )} FROM public.${leftTable} ${joinType} ${rightTable} ON public.${leftTableId} = public.${rightTableId}`;
+    const query: string = `SELECT public.${columns.join(
+      ", "
+    )} FROM public.${leftTable} ${joinType} ${rightTable} ON public.${leftTableId} = public.${rightTableId}`;
 
-      return (await pool.query(query)).rows;
+    try {
+      const result = (await pool.query(query)).rows;
+
+      return camelcaseKeys(result, { deep: true });
     } catch (error) {
       throw error;
     }
