@@ -11,4 +11,6 @@ export interface UserControllerInterface {
   ): Promise<Response>;
 
   createUser(request: Request, response: Response): Promise<Response>;
+
+  updateUserById(request: Request, response: Response): Promise<Response>;
 }

@@ -10,6 +10,7 @@ import {
   PurchaseInfoByUserInterface,
   PurchaseInfoByUserResponseInterface,
 } from "../types/index.js";
+import { INTERNAL_ERROR_MESSAGE } from "../utils/index.js";
 
 export class UserController implements UserControllerInterface {
   async getUsers(
@@ -23,7 +24,7 @@ export class UserController implements UserControllerInterface {
     } catch (error) {
       return response
         .status(StatusCodeEnum.InternalError)
-        .send({ message: "Erro interno do servidor." });
+        .send({ message: INTERNAL_ERROR_MESSAGE });
     }
   }
 
@@ -53,7 +54,7 @@ export class UserController implements UserControllerInterface {
     } catch (error) {
       return response
         .status(StatusCodeEnum.InternalError)
-        .send({ message: "Erro interno do servidor." });
+        .send({ message: INTERNAL_ERROR_MESSAGE });
     }
   }
 
@@ -90,7 +91,7 @@ export class UserController implements UserControllerInterface {
     } catch (error) {
       return response
         .status(StatusCodeEnum.InternalError)
-        .send({ message: "Erro interno do servidor." });
+        .send({ message: INTERNAL_ERROR_MESSAGE });
     }
   }
 
@@ -130,38 +131,58 @@ export class UserController implements UserControllerInterface {
     } catch (error) {
       return response
         .status(StatusCodeEnum.InternalError)
-        .send({ message: "Erro Interno do servidor." });
+        .send({ message: INTERNAL_ERROR_MESSAGE });
     }
   }
 
-  async updateUserById(request, response) {
+  async updateUserById(
+    request: Request<{ id: string }, {}, Omit<UserInterface, "id">>,
+    response: Response<ResponseMessageInterface>
+  ): Promise<Response<ResponseMessageInterface>> {
     const { id } = request.params;
     const { body } = request;
 
     const idValidation = uuidSchema.safeParse(id);
 
     if (!idValidation.success)
-      return response.status(400).send(idValidation.error.errors);
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: idValidation.error.errors });
 
-    const searchedUser = await new UserRepository().getUserById(id);
+    const searchedUser: UserInterface[] =
+      await new UserRepository().getUserById(id);
 
     if (!searchedUser.length)
-      return response.status(404).send({ message: "Usuário não encontrado." });
+      return response
+        .status(StatusCodeEnum.NotFound)
+        .send({ message: "Usuário não encontrado." });
 
     const bodyValidation = userSchema.safeParse(body);
 
     if (!bodyValidation.success)
-      return response.status(400).send(bodyValidation.error.errors);
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: bodyValidation.error.errors });
 
-    const columns = ["name", "surname", "email"];
+    const columns: (keyof Omit<UserInterface, "id">)[] = [
+      "name",
+      "surname",
+      "email",
+    ];
 
-    const values = columns.map((column) => body[column]);
+    const values: string[] = columns.map((column) => body[column]);
 
-    await new UserRepository().updateUserById(id, values);
+    try {
+      await new UserRepository().updateUserById(id, values);
 
-    return response
-      .status(200)
-      .send({ message: "Usuário editado com sucesso!" });
+      return response
+        .status(StatusCodeEnum.Ok)
+        .send({ message: "Usuário editado com sucesso!" });
+    } catch (error) {
+      return response
+        .status(StatusCodeEnum.InternalError)
+        .send({ message: INTERNAL_ERROR_MESSAGE });
+    }
   }
 
   async deleteUserById(request, response) {
