@@ -9,4 +9,6 @@ export interface UserControllerInterface {
     request: Request,
     response: Response
   ): Promise<Response>;
+
+  createUser(request: Request, response: Response): Promise<Response>;
 }

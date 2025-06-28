@@ -94,26 +94,44 @@ export class UserController implements UserControllerInterface {
     }
   }
 
-  async createUser(request, response) {
+  async createUser(
+    request: Request<{}, {}, Omit<UserInterface, "id">>,
+    response: Response<ResponseMessageInterface>
+  ): Promise<Response<ResponseMessageInterface>> {
     const { body } = request;
 
     const validation = userSchema.safeParse(body);
 
     if (!validation.success)
-      return response.status(400).send(validation.error.errors);
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: validation.error.errors });
 
-    const userColumns = ["name", "surname", "email"];
+    const userColumns: (keyof Omit<UserInterface, "id">)[] = [
+      "name",
+      "surname",
+      "email",
+    ];
 
-    const values = userColumns.reduce((acc, columnName) => {
-      acc.push(body[columnName]);
-      return acc;
-    }, []);
+    const values: string[] = userColumns.reduce(
+      (acc: string[], columnName): string[] => {
+        acc.push(body[columnName]);
+        return acc;
+      },
+      []
+    );
 
-    await new UserRepository().createUser(values);
+    try {
+      await new UserRepository().createUser(values);
 
-    return response
-      .status(201)
-      .send({ message: "Usuário criado com sucesso!" });
+      return response
+        .status(StatusCodeEnum.Created)
+        .send({ message: "Usuário criado com sucesso!" });
+    } catch (error) {
+      return response
+        .status(StatusCodeEnum.InternalError)
+        .send({ message: "Erro Interno do servidor." });
+    }
   }
 
   async updateUserById(request, response) {
