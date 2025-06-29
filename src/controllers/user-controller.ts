@@ -185,23 +185,37 @@ export class UserController implements UserControllerInterface {
     }
   }
 
-  async deleteUserById(request, response) {
+  async deleteUserById(
+    request: Request<{ id: string }>,
+    response: Response<ResponseMessageInterface>
+  ): Promise<Response<ResponseMessageInterface>> {
     const { id } = request.params;
 
     const validation = uuidSchema.safeParse(id);
 
     if (!validation.success)
-      return response.status(400).send(validation.error.errors);
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: validation.error.errors });
 
-    const searchedUser = await new UserRepository().getUserById(id);
+    const searchedUser: UserInterface[] =
+      await new UserRepository().getUserById(id);
 
     if (!searchedUser.length)
-      return response.status(404).send({ message: "Usuário não encontrado." });
+      return response
+        .status(StatusCodeEnum.NotFound)
+        .send({ message: "Usuário não encontrado." });
 
-    await new UserRepository().deleteUserById(id);
+    try {
+      await new UserRepository().deleteUserById(id);
 
-    return response
-      .status(200)
-      .send({ message: "Usuário excluído com sucesso!" });
+      return response
+        .status(StatusCodeEnum.Ok)
+        .send({ message: "Usuário excluído com sucesso!" });
+    } catch (error) {
+      return response
+        .status(StatusCodeEnum.InternalError)
+        .send({ message: INTERNAL_ERROR_MESSAGE });
+    }
   }
 }
