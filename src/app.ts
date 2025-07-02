@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express, { Express } from "express";
-import { userRouter } from "./routes/index.js";
+import { userRouter, productRouter } from "./routes/index.js";
 import helmet from "helmet";
 
 const app: Express = express();
@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use("/users", userRouter);
 
-// app.use("/products", productRouter);
+app.use("/products", productRouter);
 
 // app.use("/purchases", purchaseRouter);
 

@@ -4,3 +4,5 @@ export interface ProductInterface {
   priceInCents: string;
   size: string;
 }
+
+export interface CreateProductInterface extends Omit<ProductInterface, "id"> {}
