@@ -1,4 +1,4 @@
-import { pool } from "./data-base.js";
+import { pool } from "../config/data-base.js";
 import { PoolClient, QueryResult, QueryResultRow } from "pg";
 import { BaseRepositoryInterface } from "../types/repositories/index.js";
 import camelcaseKeys from "camelcase-keys";
