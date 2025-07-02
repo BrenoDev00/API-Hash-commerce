@@ -2,9 +2,9 @@
   "name": "api-hash-commerce",
   "version": "1.0.0",
   "description": "API RESTful de e-commerce de roupas.",
-  "main": "dist/app.js",
+  "main": "dist/server.js",
   "scripts": {
-    "dev": "tsc-watch --onSuccess \"node dist/app.js\"",
+    "dev": "tsc-watch --onSuccess \"node dist/server.js\"",
     "lint": "eslint ."
   },
   "author": "Breno",

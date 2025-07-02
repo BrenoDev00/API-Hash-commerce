@@ -1,1 +1,1 @@
-export * from "./user-controller.type";
+export * from "./user-controller.type.js";

@@ -14,18 +14,27 @@ userRouter.get(
   }
 );
 
-userRouter.get("/purchase-info", async (request, response) => {
-  return await new UserController().getPurchaseInfoByUser(request, response);
+userRouter.get(
+  "/purchase-info",
+  async (request: Request, response: Response) => {
+    await new UserController().getPurchaseInfoByUser(request, response);
+  }
+);
+
+userRouter.post("/", async (request: Request, response: Response) => {
+  await new UserController().createUser(request, response);
 });
 
-userRouter.post("/", async (request, response) => {
-  return await new UserController().createUser(request, response);
-});
+userRouter.put(
+  "/:id",
+  async (request: Request<{ id: string }>, response: Response) => {
+    await new UserController().updateUserById(request, response);
+  }
+);
 
-userRouter.put("/:id", async (request, response) => {
-  return await new UserController().updateUserById(request, response);
-});
-
-userRouter.delete("/:id", async (request, response) => {
-  return await new UserController().deleteUserById(request, response);
-});
+userRouter.delete(
+  "/:id",
+  async (request: Request<{ id: string }>, response: Response) => {
+    await new UserController().deleteUserById(request, response);
+  }
+);
