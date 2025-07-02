@@ -1,9 +1,11 @@
 import { BaseRepository } from "./base-repository.js";
+import { ProductInterface } from "../types/entities/index.js";
+import { QueryResult } from "pg";
 
 export class ProductRepository extends BaseRepository {
-  async getProducts() {
+  async getProducts(): Promise<ProductInterface[]> {
     try {
-      return await super.getAll("products", [
+      return await super.getAll<ProductInterface>("products", [
         "id",
         "name",
         "price_in_cents",
@@ -14,9 +16,9 @@ export class ProductRepository extends BaseRepository {
     }
   }
 
-  async getProductById(id) {
+  async getProductById(id: string): Promise<ProductInterface[]> {
     try {
-      return await super.getById("products", id, [
+      return await super.getById<ProductInterface>("products", id, [
         "id",
         "name",
         "price_in_cents",
@@ -27,7 +29,7 @@ export class ProductRepository extends BaseRepository {
     }
   }
 
-  async createProduct(values) {
+  async createProduct(values: string[]): Promise<void> {
     try {
       return await super.createData("products", values, [
         "name",
@@ -39,7 +41,7 @@ export class ProductRepository extends BaseRepository {
     }
   }
 
-  async updateProductById(id, values) {
+  async updateProductById(id: string, values: string[]): Promise<void> {
     try {
       return await super.updateById("products", id, values, [
         "name",
@@ -51,7 +53,7 @@ export class ProductRepository extends BaseRepository {
     }
   }
 
-  async deleteProductById(id) {
+  async deleteProductById(id: string): Promise<QueryResult> {
     try {
       return await super.deleteById("products", id);
     } catch (error) {
