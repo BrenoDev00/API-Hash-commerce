@@ -8,4 +8,6 @@ export interface ProductControllerInterface {
   createProduct(request: Request, response: Response): Promise<Response>;
 
   updateProductById(request: Request, response: Response): Promise<Response>;
+
+  deleteProductById(request: Request, response: Response): Promise<Response>;
 }

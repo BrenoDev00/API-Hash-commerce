@@ -27,16 +27,22 @@ productRouter.post(
   }
 );
 
-// productRouter.put(
-//   "/:id",
-//   async (request: Request, response: Response): Promise<void> => {
-//     await new ProductController().updateProductById(request, response);
-//   }
-// );
+productRouter.put(
+  "/:id",
+  async (
+    request: Request<{ id: string }>,
+    response: Response
+  ): Promise<void> => {
+    await new ProductController().updateProductById(request, response);
+  }
+);
 
-// productRouter.delete(
-//   "/:id",
-//   async (request: Request, response: Response): Promise<void> => {
-//     await new ProductController().deleteProductById(request, response);
-//   }
-// );
+productRouter.delete(
+  "/:id",
+  async (
+    request: Request<{ id: string }>,
+    response: Response
+  ): Promise<void> => {
+    await new ProductController().deleteProductById(request, response);
+  }
+);

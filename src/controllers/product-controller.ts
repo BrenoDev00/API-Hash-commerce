@@ -153,23 +153,37 @@ export class ProductController implements ProductControllerInterface {
     }
   }
 
-  // async deleteProductById(request, response) {
-  //   const { id } = request.params;
+  async deleteProductById(
+    request: Request<{ id: string }>,
+    response: Response<ResponseMessageInterface>
+  ): Promise<Response<ResponseMessageInterface>> {
+    const { id } = request.params;
 
-  //   const validation = uuidSchema.safeParse(id);
+    const validation = uuidSchema.safeParse(id);
 
-  //   if (!validation.success)
-  //     return response.status(400).send(validation.error.errors);
+    if (!validation.success)
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: validation.error.errors });
 
-  //   const searchedProduct = await new ProductRepository().getProductById(id);
+    const searchedProduct: ProductInterface[] =
+      await new ProductRepository().getProductById(id);
 
-  //   if (!searchedProduct.length)
-  //     return response.status(404).send({ message: "Produto não encontrado." });
+    if (!searchedProduct.length)
+      return response
+        .status(StatusCodeEnum.NotFound)
+        .send({ message: "Produto não encontrado." });
 
-  //   await new ProductRepository().deleteProductById(id);
+    try {
+      await new ProductRepository().deleteProductById(id);
 
-  //   return response
-  //     .status(200)
-  //     .send({ message: "Produto excluído com sucesso!" });
-  // }
+      return response
+        .status(StatusCodeEnum.Ok)
+        .send({ message: "Produto excluído com sucesso!" });
+    } catch (error) {
+      return response
+        .status(StatusCodeEnum.InternalError)
+        .send({ message: INTERNAL_ERROR_MESSAGE });
+    }
+  }
 }
