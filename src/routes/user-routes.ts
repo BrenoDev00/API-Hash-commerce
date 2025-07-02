@@ -8,16 +8,16 @@ userRouter.get("/", async (request: Request, response: Response) => {
 });
 
 userRouter.get(
-  "/:id",
-  async (request: Request<{ id: string }>, response: Response) => {
-    await new UserController().getUserById(request, response);
+  "/purchase-info",
+  async (request: Request, response: Response) => {
+    await new UserController().getPurchaseInfoByUser(request, response);
   }
 );
 
 userRouter.get(
-  "/purchase-info",
-  async (request: Request, response: Response) => {
-    await new UserController().getPurchaseInfoByUser(request, response);
+  "/:id",
+  async (request: Request<{ id: string }>, response: Response) => {
+    await new UserController().getUserById(request, response);
   }
 );
 
