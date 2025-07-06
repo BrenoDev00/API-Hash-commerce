@@ -1,9 +1,13 @@
 import { BaseRepository } from "./base-repository.js";
+import {
+  PurchaseListInterface,
+} from "../types/index.js";
+import { QueryResult, QueryResultRow } from "pg";
 
 export class PurchaseRepository extends BaseRepository {
-  async getPurchases() {
+  async getPurchases(): Promise<PurchaseListInterface[]> {
     try {
-      return await super.getAll("purchases", [
+      return await super.getAll<PurchaseListInterface>("purchases", [
         "id",
         "purchase_date",
         "delivery_address",
@@ -14,9 +18,9 @@ export class PurchaseRepository extends BaseRepository {
     }
   }
 
-  async getPurchaseById(id) {
+  async getPurchaseById(id: string): Promise<PurchaseListInterface[]> {
     try {
-      return await super.getById("purchases", id, [
+      return await super.getById<PurchaseListInterface>("purchases", id, [
         "id",
         "purchase_date",
         "delivery_address",
@@ -27,7 +31,7 @@ export class PurchaseRepository extends BaseRepository {
     }
   }
 
-  async createPurchase(purchaseValues) {
+  async createPurchase(purchaseValues: string[]): Promise<QueryResultRow> {
     try {
       return await super.createDataWithReturn(
         "purchases",
@@ -40,7 +44,10 @@ export class PurchaseRepository extends BaseRepository {
     }
   }
 
-  async updatePurchaseById(id, values) {
+  async updatePurchaseById(
+    id: string,
+    values: string[]
+  ): Promise<QueryResultRow> {
     try {
       return await super.updateByIdWithReturn(
         "purchases",
@@ -54,7 +61,7 @@ export class PurchaseRepository extends BaseRepository {
     }
   }
 
-  async deletePurchaseById(id) {
+  async deletePurchaseById(id: string): Promise<QueryResult> {
     try {
       return await super.deleteById("purchases", id);
     } catch (error) {
