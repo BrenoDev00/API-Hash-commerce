@@ -4,7 +4,7 @@ import { UserRepository } from "../repositories/user-repository.js";
 import { uuidSchema } from "../schemas/uuid-schema.js";
 import {
   purchaseSchema,
-  // updatePurchaseSchema,
+  updatePurchaseSchema,
 } from "../schemas/purchase-schema.js";
 import snakecaseKeys from "snakecase-keys";
 import { productAmmountSchema } from "../schemas/product-schema.js";
@@ -158,52 +158,73 @@ export class PurchaseController implements PurchaseControllerInterface {
     }
   }
 
-  // async updatePurchaseById(request, response) {
-  //   const { id, productAmmount } = request.params;
-  //   const { body } = request;
+  async updatePurchaseById(
+    request: Request<
+      { id: string; productAmmount: string },
+      {},
+      { deliveryAddress: string }
+    >,
+    response: Response<ResponseMessageInterface>
+  ): Promise<Response<ResponseMessageInterface>> {
+    const { id, productAmmount } = request.params;
+    const { body } = request;
 
-  //   const idValidation = uuidSchema.safeParse(id);
+    const idValidation = uuidSchema.safeParse(id);
 
-  //   const formattedProductAmmount = Number(productAmmount);
+    const formattedProductAmmount = Number(productAmmount);
 
-  //   const productAmmountValidation = productAmmountSchema.safeParse(
-  //     formattedProductAmmount
-  //   );
+    const productAmmountValidation = productAmmountSchema.safeParse(
+      formattedProductAmmount
+    );
 
-  //   if (!idValidation.success)
-  //     return response.status(400).send(idValidation.error.errors);
+    if (!idValidation.success)
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: idValidation.error.errors });
 
-  //   const searchedProduct = await new PurchaseRepository().getPurchaseById(id);
+    const searchedPurchase: PurchaseListInterface[] =
+      await new PurchaseRepository().getPurchaseById(id);
 
-  //   if (!searchedProduct.length)
-  //     return response.status(404).send({ message: "Compra não encontrada." });
+    if (!searchedPurchase.length)
+      return response
+        .status(StatusCodeEnum.NotFound)
+        .send({ message: "Compra não encontrada." });
 
-  //   if (!productAmmountValidation.success)
-  //     return response.status(400).send(productAmmountValidation.error.errors);
+    if (!productAmmountValidation.success)
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: productAmmountValidation.error.errors });
 
-  //   const bodyValidation = updatePurchaseSchema.safeParse(body);
+    const bodyValidation = updatePurchaseSchema.safeParse(body);
 
-  //   if (!bodyValidation.success)
-  //     return response.status(400).send(bodyValidation.error.errors);
+    if (!bodyValidation.success)
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: bodyValidation.error.errors });
 
-  //   const columns = ["delivery_address"];
+    const columns: (keyof Pick<CreatePurchaseInterface, "deliveryAddress">)[] =
+      ["deliveryAddress"];
 
-  //   const values = columns.map((column) => body[column]);
+    const values: string[] = columns.map((column) => body[column]);
 
-  //   const purchaseId = await new PurchaseRepository().updatePurchaseById(
-  //     id,
-  //     values
-  //   );
+    try {
+      const purchaseId: QueryResultRow =
+        await new PurchaseRepository().updatePurchaseById(id, values);
 
-  //   await new PurchaseProductController().updatePurchaseProductByPurchaseId(
-  //     productAmmount,
-  //     purchaseId
-  //   );
+      await new PurchaseProductController().updatePurchaseProductByPurchaseId(
+        [productAmmount],
+        String(purchaseId)
+      );
 
-  //   return response
-  //     .status(200)
-  //     .send({ message: "Compra editada com sucesso!" });
-  // }
+      return response
+        .status(StatusCodeEnum.Ok)
+        .send({ message: "Compra editada com sucesso!" });
+    } catch (error) {
+      return response
+        .status(StatusCodeEnum.InternalError)
+        .send({ message: INTERNAL_ERROR_MESSAGE });
+    }
+  }
 
   // async deletePurchaseById(request, response) {
   //   const { id } = request.params;

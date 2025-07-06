@@ -30,9 +30,15 @@ purchaseRouter.post(
   }
 );
 
-// purchaseRouter.put("/:id/:productAmmount", async (request, response) => {
-//   return await new PurchaseController().updatePurchaseById(request, response);
-// });
+purchaseRouter.put(
+  "/:id/:productAmmount",
+  async (
+    request: Request<{ id: string; productAmmount: string }>,
+    response: Response
+  ): Promise<void> => {
+    await new PurchaseController().updatePurchaseById(request, response);
+  }
+);
 
 // purchaseRouter.delete("/:id", async (request, response) => {
 //   return await new PurchaseController().deletePurchaseById(request, response);

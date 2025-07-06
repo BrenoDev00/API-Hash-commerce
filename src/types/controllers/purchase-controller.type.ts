@@ -6,4 +6,6 @@ export interface PurchaseControllerInterface {
   getPurchaseById(request: Request, response: Response): Promise<Response>;
 
   createPurchase(request: Request, response: Response): Promise<Response>;
+
+  updatePurchaseById(request: Request, response: Response): Promise<Response>;
 }
