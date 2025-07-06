@@ -6,16 +6,21 @@ import {
   purchaseSchema,
   updatePurchaseSchema,
 } from "../schemas/purchase-schema.js";
+import snakecaseKeys from "snakecase-keys";
 import { productAmmountSchema } from "../schemas/product-schema.js";
 import { PurchaseProductController } from "./purchase-product-controller.js";
 import {
   PurchaseControllerInterface,
   PurchaseListInterface,
   ResponseMessageInterface,
+  CreatePurchaseInterface,
   StatusCodeEnum,
+  ProductInterface,
+  UserInterface,
 } from "../types/index.js";
 import { INTERNAL_ERROR_MESSAGE } from "../utils/index.js";
 import { Request, Response } from "express";
+import { QueryResultRow } from "pg";
 
 export class PurchaseController implements PurchaseControllerInterface {
   async getPurchases(
@@ -64,66 +69,94 @@ export class PurchaseController implements PurchaseControllerInterface {
     }
   }
 
-  // async createPurchase(request, response) {
-  //   const { body } = request;
-  //   const { user_id } = body;
-  //   const { productId, productAmmount } = request.params;
+  async createPurchase(
+    request: Request<
+      { productId: string; productAmmount: string },
+      {},
+      CreatePurchaseInterface
+    >,
+    response: Response<ResponseMessageInterface>
+  ): Promise<Response<ResponseMessageInterface>> {
+    const { body } = request;
+    const { userId } = body;
+    const { productId, productAmmount } = request.params;
 
-  //   const formattedProductAmmount = Number(productAmmount);
+    const formattedProductAmmount: number = Number(productAmmount);
 
-  //   const productIdValidation = uuidSchema.safeParse(productId);
+    const productIdValidation = uuidSchema.safeParse(productId);
 
-  //   const productAmmountValidation = productAmmountSchema.safeParse(
-  //     formattedProductAmmount
-  //   );
+    const productAmmountValidation = productAmmountSchema.safeParse(
+      formattedProductAmmount
+    );
 
-  //   const bodyValidation = purchaseSchema.safeParse(body);
+    const bodyValidation = purchaseSchema.safeParse(body);
 
-  //   if (!productIdValidation.success)
-  //     return response.status(400).send(productIdValidation.error.errors);
+    if (!productIdValidation.success)
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: productIdValidation.error.errors });
 
-  //   const searchedProductId = await new ProductRepository().getProductById(
-  //     productId
-  //   );
+    const searchedProductId: ProductInterface[] =
+      await new ProductRepository().getProductById(productId);
 
-  //   if (!searchedProductId.length)
-  //     return response
-  //       .status(404)
-  //       .send({ message: "id do produto não encontrado." });
+    if (!searchedProductId.length)
+      return response
+        .status(StatusCodeEnum.NotFound)
+        .send({ message: "Produto não encontrado." });
 
-  //   if (!productAmmountValidation.success)
-  //     return response.status(400).send(productAmmountValidation.error.errors);
+    if (!productAmmountValidation.success)
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: productAmmountValidation.error.errors });
 
-  //   if (!bodyValidation.success)
-  //     return response.status(400).send(bodyValidation.error.errors);
+    if (!bodyValidation.success)
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: bodyValidation.error.errors });
 
-  //   const searchedUserId = await new UserRepository().getUserById(user_id);
+    const searchedUserId: UserInterface[] =
+      await new UserRepository().getUserById(userId);
 
-  //   if (!searchedUserId.length)
-  //     return response
-  //       .status(404)
-  //       .send({ message: "id do usuário não encontrado." });
+    if (!searchedUserId.length)
+      return response
+        .status(StatusCodeEnum.NotFound)
+        .send({ message: "Usuário não encontrado." });
 
-  //   const purchaseColumns = ["delivery_address", "user_id"];
+    const purchaseColumns: (keyof CreatePurchaseInterface)[] = [
+      "deliveryAddress",
+      "userId",
+    ];
 
-  //   const values = purchaseColumns.reduce((acc, columnName) => {
-  //     acc.push(body[columnName]);
+    const values: string[] = purchaseColumns.reduce(
+      (acc: string[], columnName) => {
+        acc.push(body[columnName]);
 
-  //     return acc;
-  //   }, []);
+        snakecaseKeys(body);
 
-  //   const purchaseId = await new PurchaseRepository().createPurchase(values);
+        return acc;
+      },
+      []
+    );
 
-  //   await new PurchaseProductController().createPurchaseProduct(
-  //     purchaseId,
-  //     productId,
-  //     productAmmount
-  //   );
+    try {
+      const purchaseId: QueryResultRow =
+        await new PurchaseRepository().createPurchase(values);
 
-  //   return response
-  //     .status(201)
-  //     .send({ message: "Compra adicionada com sucesso!" });
-  // }
+      await new PurchaseProductController().createPurchaseProduct(
+        purchaseId,
+        productId,
+        productAmmount
+      );
+
+      return response
+        .status(StatusCodeEnum.Created)
+        .send({ message: "Compra adicionada com sucesso!" });
+    } catch (error) {
+      return response
+        .status(StatusCodeEnum.InternalError)
+        .send({ message: INTERNAL_ERROR_MESSAGE });
+    }
+  }
 
   // async updatePurchaseById(request, response) {
   //   const { id, productAmmount } = request.params;

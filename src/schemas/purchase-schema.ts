@@ -2,10 +2,10 @@ import { z } from "zod";
 import { uuidSchema } from "./uuid-schema.js";
 
 export const purchaseSchema = z.object({
-  delivery_address: z.string().min(3),
-  user_id: uuidSchema,
+  deliveryAddress: z.string().min(3),
+  userId: uuidSchema,
 });
 
 export const updatePurchaseSchema = z.object({
-  delivery_address: z.string().min(3),
+  deliveryAddress: z.string().min(3),
 });

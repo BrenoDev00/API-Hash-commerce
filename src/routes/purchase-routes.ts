@@ -20,12 +20,15 @@ purchaseRouter.get(
   }
 );
 
-// purchaseRouter.post(
-//   "/:productId/:productAmmount",
-//   async (request, response) => {
-//     return await new PurchaseController().createPurchase(request, response);
-//   }
-// );
+purchaseRouter.post(
+  "/:productId/:productAmmount",
+  async (
+    request: Request<{ productId: string; productAmmount: string }>,
+    response: Response
+  ): Promise<void> => {
+    await new PurchaseController().createPurchase(request, response);
+  }
+);
 
 // purchaseRouter.put("/:id/:productAmmount", async (request, response) => {
 //   return await new PurchaseController().updatePurchaseById(request, response);
