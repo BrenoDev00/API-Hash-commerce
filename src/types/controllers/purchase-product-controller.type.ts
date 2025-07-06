@@ -1,14 +1,16 @@
+import { QueryResult } from "pg";
+
 export interface PurchaseProductControllerInterface {
   createPurchaseProduct(
     purchaseId: string,
     productId: string,
-    productAmmount: number
+    productAmmount: string
   ): Promise<void>;
 
   updatePurchaseProductByPurchaseId(
-    productAmmount: number,
+    productAmmount: string[],
     purchaseId: string
   ): Promise<void>;
 
-  deletePurchaseProductByPurchaseId(purchaseId: string): Promise<void>;
+  deletePurchaseProductByPurchaseId(purchaseId: string): Promise<QueryResult>;
 }

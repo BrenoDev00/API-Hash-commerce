@@ -4,7 +4,7 @@ import { UserRepository } from "../repositories/user-repository.js";
 import { uuidSchema } from "../schemas/uuid-schema.js";
 import {
   purchaseSchema,
-  updatePurchaseSchema,
+  // updatePurchaseSchema,
 } from "../schemas/purchase-schema.js";
 import snakecaseKeys from "snakecase-keys";
 import { productAmmountSchema } from "../schemas/product-schema.js";
@@ -143,7 +143,7 @@ export class PurchaseController implements PurchaseControllerInterface {
         await new PurchaseRepository().createPurchase(values);
 
       await new PurchaseProductController().createPurchaseProduct(
-        purchaseId,
+        String(purchaseId),
         productId,
         productAmmount
       );

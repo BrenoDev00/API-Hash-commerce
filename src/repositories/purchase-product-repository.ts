@@ -1,7 +1,8 @@
+import { QueryResult } from "pg";
 import { BaseRepository } from "./base-repository.js";
 
 export class PurchaseProductRepository extends BaseRepository {
-  async createPurchaseProduct(values) {
+  async createPurchaseProduct(values: string[]): Promise<void> {
     try {
       return await super.createData("purchases_products", values, [
         "purchase_id",
@@ -13,7 +14,10 @@ export class PurchaseProductRepository extends BaseRepository {
     }
   }
 
-  async updatePurchaseProductByPurchaseId(value, purchaseId) {
+  async updatePurchaseProductByPurchaseId(
+    value: string[],
+    purchaseId: string
+  ): Promise<void> {
     try {
       return await super.updateWhere(
         "purchases_products",
@@ -27,7 +31,7 @@ export class PurchaseProductRepository extends BaseRepository {
     }
   }
 
-  async deletePurchaseProductByPurchaseId(id) {
+  async deletePurchaseProductByPurchaseId(id: string): Promise<QueryResult> {
     try {
       return super.deleteWhere("purchases_products", "purchase_id", id);
     } catch (error) {

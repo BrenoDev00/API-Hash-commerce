@@ -1,3 +1,4 @@
+import { QueryResult } from "pg";
 import { PurchaseProductRepository } from "../repositories/purchase-product-repository.js";
 import { PurchaseProductControllerInterface } from "../types/index.js";
 
@@ -7,15 +8,15 @@ export class PurchaseProductController
   async createPurchaseProduct(
     purchaseId: string,
     productId: string,
-    productAmmount: number
+    productAmmount: string
   ): Promise<void> {
-    const values: (string | number)[] = [purchaseId, productId, productAmmount];
+    const values: string[] = [purchaseId, productId, productAmmount];
 
     return await new PurchaseProductRepository().createPurchaseProduct(values);
   }
 
   async updatePurchaseProductByPurchaseId(
-    productAmmount: number,
+    productAmmount: string[],
     purchaseId: string
   ): Promise<void> {
     return await new PurchaseProductRepository().updatePurchaseProductByPurchaseId(
@@ -24,7 +25,9 @@ export class PurchaseProductController
     );
   }
 
-  async deletePurchaseProductByPurchaseId(purchaseId: string): Promise<void> {
+  async deletePurchaseProductByPurchaseId(
+    purchaseId: string
+  ): Promise<QueryResult> {
     return await new PurchaseProductRepository().deletePurchaseProductByPurchaseId(
       purchaseId
     );
