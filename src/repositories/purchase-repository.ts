@@ -1,7 +1,5 @@
 import { BaseRepository } from "./base-repository.js";
-import {
-  PurchaseListInterface,
-} from "../types/index.js";
+import { PurchaseListInterface } from "../types/index.js";
 import { QueryResult, QueryResultRow } from "pg";
 
 export class PurchaseRepository extends BaseRepository {
