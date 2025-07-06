@@ -14,9 +14,12 @@
 - Zod: validação de entradas do client pela API;
 - Helmet: definição de cabeçalho HTTP da API;
 - PostgreSQL: banco de dados relacional utilizado para armazenar dados da aplicação;
+- Postman: utilizado para testar os endpoints da aplicação;
 - ESLint e Prettier: estilo de código e formatação;
 - draw.io: utilizado para modelagem de dados do banco de dados;
-- Excel: utilizado para desenvolver o dicionário de dados do banco de dados.
+- Excel: utilizado para desenvolver o dicionário de dados do banco de dados;
+- Gitflow: fluxo de trabalho entre branches develop e main;
+- Conventional Commits: organização de commits.
 ## Principais endpoints
 - /users (GET, POST);
 - /users/purchase-info (GET).
