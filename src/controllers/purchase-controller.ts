@@ -226,25 +226,41 @@ export class PurchaseController implements PurchaseControllerInterface {
     }
   }
 
-  // async deletePurchaseById(request, response) {
-  //   const { id } = request.params;
+  async deletePurchaseById(
+    request: Request<{ id: string }>,
+    response: Response<ResponseMessageInterface>
+  ): Promise<Response<ResponseMessageInterface>> {
+    const { id } = request.params;
 
-  //   const validation = uuidSchema.safeParse(id);
+    const validation = uuidSchema.safeParse(id);
 
-  //   if (!validation.success)
-  //     return response.status(400).send(validation.error.errors);
+    if (!validation.success)
+      return response
+        .status(StatusCodeEnum.BadRequest)
+        .send({ message: validation.error.errors });
 
-  //   const searchedPurchase = await new PurchaseRepository().getPurchaseById(id);
+    const searchedPurchase: PurchaseListInterface[] =
+      await new PurchaseRepository().getPurchaseById(id);
 
-  //   if (!searchedPurchase.length)
-  //     return response.status(404).send({ message: "Compra não encontrada." });
+    if (!searchedPurchase.length)
+      return response
+        .status(StatusCodeEnum.NotFound)
+        .send({ message: "Compra não encontrada." });
 
-  //   await new PurchaseProductController().deletePurchaseProductByPurchaseId(id);
+    try {
+      await new PurchaseProductController().deletePurchaseProductByPurchaseId(
+        id
+      );
 
-  //   await new PurchaseRepository().deletePurchaseById(id);
+      await new PurchaseRepository().deletePurchaseById(id);
 
-  //   return response
-  //     .status(200)
-  //     .send({ message: "Compra excluída com sucesso!" });
-  // }
+      return response
+        .status(StatusCodeEnum.Ok)
+        .send({ message: "Compra excluída com sucesso!" });
+    } catch (error) {
+      return response
+        .status(StatusCodeEnum.InternalError)
+        .send({ message: INTERNAL_ERROR_MESSAGE });
+    }
+  }
 }

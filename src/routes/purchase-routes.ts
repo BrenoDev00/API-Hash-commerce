@@ -40,6 +40,12 @@ purchaseRouter.put(
   }
 );
 
-// purchaseRouter.delete("/:id", async (request, response) => {
-//   return await new PurchaseController().deletePurchaseById(request, response);
-// });
+purchaseRouter.delete(
+  "/:id",
+  async (
+    request: Request<{ id: string }>,
+    response: Response
+  ): Promise<void> => {
+    await new PurchaseController().deletePurchaseById(request, response);
+  }
+);
