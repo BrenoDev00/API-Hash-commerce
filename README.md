@@ -36,7 +36,8 @@
 ## Modelagem de dados
 - [Acesse aqui](./data-model.drawio) o arquivo drawio da modelagem de dados.
 ## Como rodar a aplicação
-- Clone o repositório localmente;
+- Primeiramente, é necessário ter o PostgreSQL instalado na máquina e depois criar um banco de dados utilizando como base o script SQL [schema-config](./src/config/schema-config.sql);
+- Após configurar a estrutura do banco de dados, clone o repositório localmente;
 - Em seguida, execute o comando npm install para instalar as dependências da aplicação;
 - Depois, execute o comando npm run dev que irá rodar o servidor possivelmente na porta 3000 localmente;
 - Observação: é necessário adicionar um arquivo chamado .env na raiz do diretório da aplicação e, em seguida, preencher com as variáveis de ambiente conforme exemplo do arquivo .env.example.
