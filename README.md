@@ -1,3 +1,41 @@
-# API Hash-commerce (em andamento)
-API RESTful de e-commerce de roupas.
-- [Dicionário de Dados](./data-dictionary.xlsx)
+# API Hash-commerce
+## Descrição
+- API RESTfull de e-commerce de roupas com rotas para realização de operações CRUD.
+## Funcionalidades
+- Cadastrar, listar, atualizar e remover usuários;
+- Listar informações de compra por usuário;
+- Cadastrar, listar, atualizar e remover produtos;
+- Cadastrar, listar, atualizar e remover compras.
+## Tecnologias e ferramentas utilizadas
+- Express: framework utilizado para estruturar a API RESTfull;
+- Node.js: utilizado para desenvolver a API;
+- TypeScript: inicialmente a API foi desenvolvida com JavaScript e depois migrada para TypeScript;
+- node-postgres: conexão e queries no banco de dados através da API, além de proteção contra SQL Injection; 
+- Zod: validação de entradas do client pela API;
+- Helmet: definição de cabeçalho HTTP da API;
+- PostgreSQL: banco de dados relacional utilizado para armazenar dados da aplicação;
+- ESLint e Prettier: estilo de código e formatação;
+- draw.io: utilizado para modelagem de dados do banco de dados;
+- Excel: utilizado para desenvolver o dicionário de dados do banco de dados.
+## Principais endpoints
+- /users (GET, POST);
+- /users/purchase-info (GET).
+---
+- /products (GET, POST);
+- /products/:id (GET, PUT e DELETE).
+--- 
+- /purchases (GET);
+- /purchases/:productId/:productAmmount (POST);
+- /purchases/:id/:productAmmount (PUT);
+- /purchases/:id (DELETE).
+## Dicionário de dados
+- [Acesse aqui](./data-dictionary.xlsx) o arquivo xlsx do dicionário de dados.
+## Modelagem de dados
+- [Acesse aqui](./data-model.drawio) o arquivo drawio da modelagem de dados.
+## Como rodar a aplicação
+- Clone o repositório localmente;
+- Em seguida, execute o comando npm install para instalar as dependências da aplicação;
+- Depois, execute o comando npm run dev que irá rodar o servidor possivelmente na porta 3000 localmente;
+- Observação: é necessário adicionar um arquivo chamado .env na raiz do diretório da aplicação e, em seguida, preencher com as variáveis de ambiente conforme exemplo do arquivo .env.example.
+## Licença
+Este código está licenciado usando a [licença-MIT](./LICENSE).
