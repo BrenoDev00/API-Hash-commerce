@@ -22,7 +22,7 @@ export class ProductController implements ProductControllerInterface {
         await new ProductRepository().getProducts();
 
       return response.status(StatusCodeEnum.Ok).send(result);
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -53,7 +53,7 @@ export class ProductController implements ProductControllerInterface {
           .send({ message: "Produto não encontrado." });
 
       return response.status(StatusCodeEnum.Ok).send(result);
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -96,7 +96,7 @@ export class ProductController implements ProductControllerInterface {
       return response
         .status(StatusCodeEnum.Created)
         .send({ message: "Produto criado com sucesso!" });
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -146,7 +146,7 @@ export class ProductController implements ProductControllerInterface {
       return response
         .status(StatusCodeEnum.Ok)
         .send({ message: "Produto editado com sucesso!" });
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -180,7 +180,7 @@ export class ProductController implements ProductControllerInterface {
       return response
         .status(StatusCodeEnum.Ok)
         .send({ message: "Produto excluído com sucesso!" });
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });

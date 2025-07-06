@@ -16,7 +16,13 @@ export default defineConfig([
     rules: {
       ...tseslint.configs.recommended.rules,
       "no-console": "off",
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
   },
 ]);

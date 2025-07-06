@@ -21,7 +21,7 @@ export class UserController implements UserControllerInterface {
       const result: UserInterface[] = await new UserRepository().getUsers();
 
       return response.status(StatusCodeEnum.Ok).send(result);
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -51,7 +51,7 @@ export class UserController implements UserControllerInterface {
           .send({ message: "Usuário não encontrado." });
 
       return response.status(StatusCodeEnum.Ok).send(result);
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -88,7 +88,7 @@ export class UserController implements UserControllerInterface {
       );
 
       return response.status(StatusCodeEnum.Ok).send(result);
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -128,7 +128,7 @@ export class UserController implements UserControllerInterface {
       return response
         .status(StatusCodeEnum.Created)
         .send({ message: "Usuário criado com sucesso!" });
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -178,7 +178,7 @@ export class UserController implements UserControllerInterface {
       return response
         .status(StatusCodeEnum.Ok)
         .send({ message: "Usuário editado com sucesso!" });
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -212,7 +212,7 @@ export class UserController implements UserControllerInterface {
       return response
         .status(StatusCodeEnum.Ok)
         .send({ message: "Usuário excluído com sucesso!" });
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });

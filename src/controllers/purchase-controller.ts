@@ -32,7 +32,7 @@ export class PurchaseController implements PurchaseControllerInterface {
         await new PurchaseRepository().getPurchases();
 
       return response.status(StatusCodeEnum.Ok).send(result);
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -62,7 +62,7 @@ export class PurchaseController implements PurchaseControllerInterface {
           .send({ message: "Compra não encontrada." });
 
       return response.status(StatusCodeEnum.Ok).send(result);
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -151,7 +151,7 @@ export class PurchaseController implements PurchaseControllerInterface {
       return response
         .status(StatusCodeEnum.Created)
         .send({ message: "Compra adicionada com sucesso!" });
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -219,7 +219,7 @@ export class PurchaseController implements PurchaseControllerInterface {
       return response
         .status(StatusCodeEnum.Ok)
         .send({ message: "Compra editada com sucesso!" });
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
@@ -257,7 +257,7 @@ export class PurchaseController implements PurchaseControllerInterface {
       return response
         .status(StatusCodeEnum.Ok)
         .send({ message: "Compra excluída com sucesso!" });
-    } catch (error) {
+    } catch (_error) {
       return response
         .status(StatusCodeEnum.InternalError)
         .send({ message: INTERNAL_ERROR_MESSAGE });
