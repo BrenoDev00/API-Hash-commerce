@@ -4,6 +4,8 @@
   "description": "API RESTful de e-commerce de roupas.",
   "main": "dist/server.js",
   "scripts": {
+    "start": "node dist/server.js",
+    "build": "tsc",
     "dev": "tsc-watch --onSuccess \"node dist/server.js\"",
     "lint": "eslint ."
   },
