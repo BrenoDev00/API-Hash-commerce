@@ -1,13 +1,13 @@
 # API Hash-commerce
 ## Descrição
-- API RESTfull de e-commerce de roupas com rotas para realização de operações CRUD.
+- API RESTful de e-commerce de roupas com rotas para realização de operações CRUD.
 ## Funcionalidades
 - Cadastrar, listar, atualizar e remover usuários;
 - Listar informações de compra por usuário;
 - Cadastrar, listar, atualizar e remover produtos;
 - Cadastrar, listar, atualizar e remover compras.
 ## Tecnologias e ferramentas utilizadas
-- Express: framework utilizado para estruturar a API RESTfull;
+- Express: framework utilizado para estruturar a API RESTful;
 - Node.js: utilizado para desenvolver a API;
 - TypeScript: inicialmente a API foi desenvolvida com JavaScript e depois migrada para TypeScript;
 - node-postgres: conexão e queries no banco de dados através da API, além de proteção contra SQL Injection; 
